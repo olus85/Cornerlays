@@ -9,7 +9,8 @@ Cornerlays is a simple yet powerful app designed for Android TV and other Androi
 
 ## ✨ Features
 
-* **Three Core Widgets:** Display the current Time, Date, and Weather information simultaneously.
+* **Three Core Widgets:**
+    * Display the current Time, Date, and Weather information simultaneously.
 * **Clock Widget:**
     * Switch between 12-hour and 24-hour formats.
 * **Date Widget:**
