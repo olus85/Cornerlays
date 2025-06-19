@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cornerlays</string>
+    <string name="configure_overlays">Configure Overlays</string>
+    <string name="setting_clock_enable">Show Clock</string>
+    <string name="setting_clock_show_seconds">Show Seconds</string>
+    <string name="setting_clock_24h_format">Use 24-Hour Format</string>
+
+    <string name="setting_date_enable">Show Date</string>
+    <string name="setting_date_format">Date Format</string>
+
+    <string name="setting_weather_enable">Show Weather</string>
+    <string name="setting_weather_city">City</string>
+    <string name="setting_weather_fahrenheit">Use Fahrenheit instead of Celsius</string>
+    <string name="weather_error">Weather Error</string>
+    <string name="weather_no_city">Please enter a city</string>
+    <string name="weather_city_not_found">City not found</string>
+
+    <string name="setting_group_options">Options</string>
+    <string name="setting_group_position">Position</string>
+    <string name="setting_position_label">Alignment</string>
+    <string name="position_top_right">Top Right</string>
+    <string name="position_top_left">Top Left</string>
+    <string name="position_bottom_right">Bottom Right</string>
+    <string name="position_bottom_left">Bottom Left</string>
+    <string name="setting_position_fine_tune">Fine-Tune Position</string>
+    <string name="setting_group_appearance">Appearance</string>
+    <string name="setting_size">Font Size</string>
+    <string name="setting_size_display">%d sp</string>
+    <string name="setting_color">Font Color</string>
+    <string name="setting_shadow_color">Outline/Shadow Color</string>
+
+    <string name="tab_clock">Clock</string>
+    <string name="tab_date">Date</string>
+    <string name="tab_weather">Weather</string>
+</resources>

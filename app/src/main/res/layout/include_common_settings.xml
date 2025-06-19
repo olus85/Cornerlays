@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView style="@style/TextAppearance.AppCompat.Medium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setting_group_position" android:layout_marginTop="24dp" android:layout_marginBottom="8dp"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?android:attr/listDivider" android:layout_marginBottom="8dp"/>
+    <Spinner
+        android:id="@+id/spinner_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/settings_item_background"
+        android:focusable="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"/>
+    <Button
+        android:id="@+id/btn_fine_tune"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/settings_item_background"
+        android:focusable="true"
+        android:text="@string/setting_position_fine_tune"/>
+
+    <TextView style="@style/TextAppearance.AppCompat.Medium" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setting_group_appearance" android:layout_marginTop="24dp" android:layout_marginBottom="8dp"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="?android:attr/listDivider" android:layout_marginBottom="8dp"/>
+
+    <RelativeLayout
+        android:id="@+id/container_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/settings_item_background">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setting_size" android:layout_centerVertical="true"/>
+        <TextView android:id="@+id/textview_size_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" tools:text="22 sp" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
+        <SeekBar
+            android:id="@+id/seekbar_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="34"
+            android:layout_below="@id/textview_size_value"
+            android:layout_marginTop="16dp"
+            android:focusable="true"
+            android:paddingStart="0dp" android:paddingEnd="0dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/settings_item_background"
+        android:focusable="true"
+        android:clickable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_color"
+            android:layout_centerVertical="true"/>
+        <View
+            android:id="@+id/color_preview"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_shadow_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="12dp"
+        android:background="@drawable/settings_item_background"
+        android:focusable="true"
+        android:clickable="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_shadow_color"
+            android:layout_centerVertical="true"/>
+        <View
+            android:id="@+id/shadow_color_preview"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/black"/>
+    </RelativeLayout>
+
+</merge>

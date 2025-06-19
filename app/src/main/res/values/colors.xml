@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="m3_primary">#FF70CFFF</color>
+    <color name="m3_background">#FF101416</color>
+    <color name="m3_surface">#FF1A1C1E</color>
+    <color name="m3_surface_variant">#FF43484A</color>
+    <color name="m3_on_surface">#FFE2E2E3</color>
+    <color name="m3_focus_highlight">#4D70CFFF</color> <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="html_white">#FFFFFF</color>
+    <color name="html_black">#000000</color>
+    <color name="html_silver">#C0C0C0</color>
+    <color name="html_gray">#808080</color>
+    <color name="html_maroon">#800000</color>
+    <color name="html_red">#FF0000</color>
+    <color name="html_purple">#800080</color>
+    <color name="html_fuchsia">#FF00FF</color>
+    <color name="html_green">#008000</color>
+    <color name="html_lime">#00FF00</color>
+    <color name="html_olive">#808000</color>
+    <color name="html_yellow">#FFFF00</color>
+    <color name="html_navy">#000080</color>
+    <color name="html_blue">#0000FF</color>
+    <color name="html_teal">#008080</color>
+    <color name="html_aqua">#00FFFF</color>
+</resources>

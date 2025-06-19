@@ -1,0 +1,51 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.OnScreenHA" parent="Theme.Leanback" />
+
+    <style name="Theme.OnScreenHA.Settings" parent="Theme.Material3.Dark">
+        <item name="colorPrimary">@color/m3_primary</item>
+        <item name="colorOnSurface">@color/m3_on_surface</item>
+        <item name="colorSurface">@color/m3_surface</item>
+        <item name="android:colorBackground">@color/m3_background</item>
+        <item name="switchStyle">@style/Widget.App.Switch</item>
+    </style>
+
+    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@drawable/settings_item_background</item>
+        <item name="android:focusable">true</item>
+        <item name="thumbTint">@color/switch_thumb_tint</item>
+        <item name="trackTint">@color/switch_track_tint</item>
+    </style>
+
+    <style name="SettingsItem" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@drawable/settings_item_background</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="SettingsItem.FineTuneButton" parent="SettingsItem">
+        <item name="android:textColor">@color/m3_on_surface</item>
+        <item name="android:gravity">start|center_vertical</item>
+    </style>
+
+    <style name="SettingsItem.Container" parent="SettingsItem">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="SettingsItem.Tab" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/settings_item_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/tab_text_color</item>
+    </style>
+</resources>

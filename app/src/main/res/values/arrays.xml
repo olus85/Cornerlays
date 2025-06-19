@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="position_options_array">
+        <item>@string/position_top_right</item>
+        <item>@string/position_top_left</item>
+        <item>@string/position_bottom_right</item>
+        <item>@string/position_bottom_left</item>
+    </string-array>
+
+    <string-array name="date_format_options_array_keys">
+        <item>dd.MM.yy</item> <item>dd.MM.yyyy</item>
+        <item>E, dd.MM.</item> <item>EEEE, d.MMMM</item>
+        <item>MM/dd/yy</item> <item>yyyy-MM-dd</item>
+    </string-array>
+
+    <string-array name="date_format_options_array_values">
+        <item>31.12.25</item> <item>31.12.2025</item>
+        <item>Sa, 31.12.</item> <item>Samstag, 31.Dezember</item>
+        <item>12/31/25</item> <item>2025-12-31</item>
+    </string-array>
+</resources>

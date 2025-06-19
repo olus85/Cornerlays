@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Cornerlays</string>
+    <string name="configure_overlays">Overlays konfigurieren</string>
+    <string name="setting_clock_enable">Uhrzeit anzeigen</string>
+    <string name="setting_clock_show_seconds">Sekunden anzeigen</string>
+    <string name="setting_clock_24h_format">24-Stunden-Format verwenden</string>
+
+    <string name="setting_date_enable">Datum anzeigen</string>
+    <string name="setting_date_format">Datumsformat</string>
+
+    <string name="setting_weather_enable">Wetter anzeigen</string>
+    <string name="setting_weather_city">Stadt</string>
+    <string name="setting_weather_fahrenheit">Fahrenheit statt Celsius</string>
+    <string name="weather_error">Wetter-Fehler</string>
+    <string name="weather_no_city">Bitte Stadt eingeben</string>
+    <string name="weather_city_not_found">Stadt nicht gefunden</string>
+
+    <string name="setting_group_options">Optionen</string>
+    <string name="setting_group_position">Position</string>
+    <string name="setting_position_label">Ausrichtung</string>
+    <string name="position_top_right">Oben Rechts</string>
+    <string name="position_top_left">Oben Links</string>
+    <string name="position_bottom_right">Unten Rechts</string>
+    <string name="position_bottom_left">Unten Links</string>
+    <string name="setting_position_fine_tune">Feintuning</string>
+    <string name="setting_group_appearance">Aussehen</string>
+    <string name="setting_size">Schriftgröße</string>
+    <string name="setting_size_display">%d sp</string>
+    <string name="setting_color">Schriftfarbe</string>
+    <string name="setting_shadow_color">Umriss-/Schattenfarbe</string>
+
+    <string name="tab_clock">Uhr</string>
+    <string name="tab_date">Datum</string>
+    <string name="tab_weather">Wetter</string>
+
+</resources>
