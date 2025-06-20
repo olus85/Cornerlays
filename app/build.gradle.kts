@@ -34,6 +34,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    // NEU: Verhindert Build-Fehler mit OkHttp/Kotlin-Metadaten
+    packagingOptions {
+        exclude("META-INF/kotlin-stdlib-common.kotlin_module")
+        exclude("META-INF/kotlin-stdlib.kotlin_module")
+    }
 }
 
 dependencies {
@@ -41,9 +46,12 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("com.google.android.material:material:1.12.0")
-
-    // NEU: Volley für einfache Netzwerkanfragen (Wetter-API)
     implementation("com.android.volley:volley:1.2.1")
+
+    // NEU: Für Home Assistant Integration
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

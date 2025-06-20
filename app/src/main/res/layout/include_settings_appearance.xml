@@ -1,34 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout style="@style/SettingsItem.Container">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setting_size" android:layout_centerVertical="true"/>
-        <TextView android:id="@+id/textview_size_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" tools:text="22 sp" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
+    <RelativeLayout
+        style="@style/SettingsItem.Container"
+        android:focusable="false">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/setting_size" />
+        <TextView
+            android:id="@+id/textview_size_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textStyle="bold" />
         <SeekBar
             android:id="@+id/seekbar_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="34"
             android:layout_below="@id/textview_size_value"
             android:layout_marginTop="16dp"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:max="34"
+            android:nextFocusDown="@id/container_color"
+            android:nextFocusLeft="@id/seekbar_size"
+            android:nextFocusRight="@id/seekbar_size"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/container_color"
-        style="@style/SettingsItem.Container"
-        android:clickable="true">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setting_color" android:layout_centerVertical="true"/>
-        <View android:id="@+id/color_preview" android:layout_width="32dp" android:layout_height="32dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:background="@color/white"/>
+        style="@style/SettingsItem.Container.Clickable"
+        android:nextFocusUp="@id/seekbar_size"
+        android:nextFocusDown="@id/container_shadow_color"
+        android:nextFocusLeft="@id/container_color"
+        android:nextFocusRight="@id/container_color">
+        <TextView style="@style/SettingsItem.Label" android:text="@string/setting_color"/>
+        <View
+            android:id="@+id/color_preview"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/container_shadow_color"
-        style="@style/SettingsItem.Container"
-        android:clickable="true">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/setting_shadow_color" android:layout_centerVertical="true"/>
-        <View android:id="@+id/shadow_color_preview" android:layout_width="32dp" android:layout_height="32dp" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:background="@color/black"/>
+        style="@style/SettingsItem.Container.Clickable"
+        android:nextFocusUp="@id/container_color"
+        android:nextFocusDown="@id/container_shadow_color"
+        android:nextFocusLeft="@id/container_shadow_color"
+        android:nextFocusRight="@id/container_shadow_color">
+        <TextView style="@style/SettingsItem.Label" android:text="@string/setting_shadow_color"/>
+        <View
+            android:id="@+id/shadow_color_preview"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
 </merge>

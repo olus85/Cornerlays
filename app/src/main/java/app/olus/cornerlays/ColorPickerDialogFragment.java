@@ -1,15 +1,17 @@
 package app.olus.cornerlays;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.res.ColorStateList;
+import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 public class ColorPickerDialogFragment extends DialogFragment {
@@ -19,61 +21,83 @@ public class ColorPickerDialogFragment extends DialogFragment {
     }
 
     private ColorPickerListener listener;
+    private static final String ARG_TAG = "dialog_tag";
 
     public static ColorPickerDialogFragment newInstance(String tag) {
         ColorPickerDialogFragment fragment = new ColorPickerDialogFragment();
         Bundle args = new Bundle();
-        args.putString("picker_tag", tag);
+        args.putString(ARG_TAG, tag);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public void setColorPickerListener(ColorPickerListener listener) {
-        this.listener = listener;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (getTargetFragment() instanceof ColorPickerListener) {
+            listener = (ColorPickerListener) getTargetFragment();
+        } else {
+            try {
+                listener = (ColorPickerListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString() + " or target fragment must implement ColorPickerListener");
+            }
+        }
     }
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        GridLayout colorGrid = (GridLayout) inflater.inflate(R.layout.dialog_color_picker, null);
+        View view = inflater.inflate(R.layout.dialog_color_picker, null);
+        GridLayout gridLayout = view.findViewById(R.id.color_grid);
 
-        String pickerTag = getArguments().getString("picker_tag", "");
+        int[] colors = getResources().getIntArray(R.array.color_palette);
 
-        // KORRIGIERT: Referenziert jetzt die neuen HTML-Farben
-        int[] colors = {
-                R.color.html_white, R.color.html_black, R.color.html_silver, R.color.html_gray,
-                R.color.html_maroon, R.color.html_red, R.color.html_purple, R.color.html_fuchsia,
-                R.color.html_green, R.color.html_lime, R.color.html_olive, R.color.html_yellow,
-                R.color.html_navy, R.color.html_blue, R.color.html_teal, R.color.html_aqua
-        };
+        for (final int color : colors) {
+            View colorView = new View(getContext());
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = (int) getResources().getDimension(R.dimen.color_swatch_size);
+            params.height = (int) getResources().getDimension(R.dimen.color_swatch_size);
+            params.setMargins(10, 10, 10, 10);
+            colorView.setLayoutParams(params);
 
-        for (int colorRes : colors) {
-            ImageButton colorSwatch = new ImageButton(getContext());
-            int color = getContext().getColor(colorRes);
-            colorSwatch.setImageDrawable(getContext().getDrawable(R.drawable.color_picker_swatch));
-            colorSwatch.setImageTintList(ColorStateList.valueOf(color));
-            colorSwatch.setBackgroundResource(R.drawable.color_picker_item_background);
+            // KORRIGIERT: Hintergrund und Vordergrund (Fokus) getrennt setzen
+            GradientDrawable background = (GradientDrawable) ContextCompat.getDrawable(requireContext(), R.drawable.color_swatch_background).mutate();
+            background.setColor(color);
+            colorView.setBackground(background);
+            colorView.setForeground(ContextCompat.getDrawable(requireContext(), R.drawable.color_swatch_foreground));
 
-            colorSwatch.setOnClickListener(v -> {
+            colorView.setFocusable(true);
+
+            colorView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onColorSelected(color, pickerTag);
+                    String tag = getArguments().getString(ARG_TAG);
+                    listener.onColorSelected(color, tag);
                 }
                 dismiss();
             });
-
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
-            params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
-            colorSwatch.setLayoutParams(params);
-            colorGrid.addView(colorSwatch);
+            gridLayout.addView(colorView);
         }
 
-        builder.setView(colorGrid)
-                .setTitle("Farbe auswählen")
-                .setNegativeButton("Abbrechen", (dialog, id) -> dialog.cancel());
-
+        builder.setView(view).setTitle("Farbe wählen");
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            GridLayout gridLayout = dialog.findViewById(R.id.color_grid);
+            if (gridLayout != null && gridLayout.getChildCount() > 0) {
+                gridLayout.getChildAt(0).requestFocus();
+            }
+        }
+    }
+
+    public void setColorPickerListener(ColorPickerListener listener) {
+        this.listener = listener;
     }
 }

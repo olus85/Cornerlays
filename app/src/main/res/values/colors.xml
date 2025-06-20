@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="m3_primary">#FF70CFFF</color>
+    <color name="m3_error">#FFFF8982</color>
     <color name="m3_background">#FF101416</color>
     <color name="m3_surface">#FF1A1C1E</color>
     <color name="m3_surface_variant">#FF43484A</color>
     <color name="m3_on_surface">#FFE2E2E3</color>
-    <color name="m3_focus_highlight">#4D70CFFF</color> <color name="black">#000000</color>
+    <color name="m3_on_surface_variant">#FFC3C7C9</color>
+    <color name="m3_focus_highlight">#4D70CFFF</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
     <color name="html_white">#FFFFFF</color>

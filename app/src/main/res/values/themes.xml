@@ -3,7 +3,9 @@
 
     <style name="Theme.OnScreenHA.Settings" parent="Theme.Material3.Dark">
         <item name="colorPrimary">@color/m3_primary</item>
+        <item name="colorError">@color/m3_error</item>
         <item name="colorOnSurface">@color/m3_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/m3_on_surface_variant</item>
         <item name="colorSurface">@color/m3_surface</item>
         <item name="android:colorBackground">@color/m3_background</item>
         <item name="switchStyle">@style/Widget.App.Switch</item>
@@ -21,31 +23,87 @@
     </style>
 
     <style name="SettingsItem" parent="">
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="SettingsItem.Container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@drawable/settings_item_background</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="SettingsItem.Container.Clickable" parent="SettingsItem.Container">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="SettingsItem.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="SettingsItem.TextInput.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
+
+    <style name="SettingsItem.Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="SettingsItem.Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">-8dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="SettingsItem.FineTuneButton" parent="Widget.Material3.Button.TextButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:padding">16dp</item>
         <item name="android:background">@drawable/settings_item_background</item>
         <item name="android:focusable">true</item>
-    </style>
-
-    <style name="SettingsItem.FineTuneButton" parent="SettingsItem">
         <item name="android:textColor">@color/m3_on_surface</item>
         <item name="android:gravity">start|center_vertical</item>
     </style>
 
-    <style name="SettingsItem.Container" parent="SettingsItem">
-        <item name="android:orientation">vertical</item>
+    <style name="SettingsSectionHeader" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="SettingsDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
     </style>
 
     <style name="SettingsItem.Tab" parent="">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/settings_item_background</item>
+        <item name="android:background">@drawable/tab_background_selector</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
         <item name="android:button">@null</item>
         <item name="android:textColor">@color/tab_text_color</item>
+        <item name="android:focusable">true</item>
     </style>
 </resources>

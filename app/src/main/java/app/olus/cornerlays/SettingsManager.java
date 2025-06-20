@@ -38,4 +38,14 @@ public class SettingsManager {
     public static final String KEY_WEATHER_COLOR = "weather_color";
     public static final String KEY_WEATHER_SHADOW_COLOR = "weather_shadow_color";
     public static final String ACTION_FORCE_WEATHER_UPDATE = "app.olus.cornerlays.action.FORCE_WEATHER_UPDATE";
+
+    // --- Home Assistant Specific ---
+    public static final String KEY_HA_URL = "ha_url";
+    public static final String KEY_HA_TOKEN = "ha_token";
+    public static final String KEY_HA_OVERLAYS_JSON = "ha_overlays_json";
+    public static final String ACTION_HA_CONNECTION_STATUS_UPDATE = "app.olus.cornerlays.action.HA_CONNECTION_STATUS_UPDATE";
+    public static final String EXTRA_HA_CONNECTION_STATUS = "extra_ha_connection_status";
+    public static final String ACTION_TOGGLE_HA_POSITIONING_MODE = "app.olus.cornerlays.action.TOGGLE_HA_POSITIONING_MODE";
+    public static final String EXTRA_HA_SLOT_INDEX = "extra_ha_slot_index";
+
 }

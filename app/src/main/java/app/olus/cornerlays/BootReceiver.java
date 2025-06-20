@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.text.TextUtils;
+
+import app.olus.cornerlays.ha.HomeAssistantService;
 
 public class BootReceiver extends BroadcastReceiver {
     @Override
@@ -12,17 +15,18 @@ public class BootReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             SharedPreferences prefs = context.getSharedPreferences(SettingsManager.PREFS_NAME, Context.MODE_PRIVATE);
 
-            // Starte Uhr, falls aktiviert
             if (prefs.getBoolean(SettingsManager.KEY_CLOCK_ENABLED, false)) {
                 startOverlayService(context, ClockService.class);
             }
-            // Starte Datum, falls aktiviert
             if (prefs.getBoolean(SettingsManager.KEY_DATE_ENABLED, false)) {
                 startOverlayService(context, DateService.class);
             }
-            // NEU: Starte Wetter, falls aktiviert
             if (prefs.getBoolean(SettingsManager.KEY_WEATHER_ENABLED, false)) {
                 startOverlayService(context, WeatherService.class);
+            }
+            String haJson = prefs.getString(SettingsManager.KEY_HA_OVERLAYS_JSON, "[]");
+            if (!TextUtils.isEmpty(haJson) && !haJson.equals("[]")) {
+                startOverlayService(context, HomeAssistantService.class);
             }
         }
     }

@@ -32,5 +32,37 @@
     <string name="tab_clock">Uhr</string>
     <string name="tab_date">Datum</string>
     <string name="tab_weather">Wetter</string>
+    <string name="tab_ha">HomeAssistant</string>
 
+    <string name="cancel">Abbrechen</string>
+    <string name="setting_overlay_enable">Overlay aktivieren</string>
+
+    <string name="ha_settings_title">Home Assistant Verbindung</string>
+    <string name="ha_url_hint">Home Assistant URL (z.B. http://192.168.1.100:8123)</string>
+    <string name="ha_token_hint">Langlebiges Zugriffstoken</string>
+    <string name="ha_connection_status">Verbindungsstatus</string>
+    <string name="ha_overlays_title">Home Assistant Overlays</string>
+    <string name="ha_overlay_slot">HA-Overlay %d</string>
+    <string name="ha_overlay_not_configured">Nicht konfiguriert</string>
+    <string name="ha_overlay_settings_title">%s Konfiguration</string>
+
+    <string name="ha_entity_id_hint">Entitäts-ID (z.B. sensor.temp)</string>
+    <string name="ha_entity_browse_button">Entität auswählen</string>
+    <string name="ha_display_name_hint">VOR dem Zustand (Optional, z.B. Name, Einheit, Text)</string>
+    <string name="ha_unit_hint">NACH dem Zustand (Optional, z.B. Name, Einheit, Text)</string>
+    <string name="ha_display_mode">Anzeige-Modus</string>
+    <string name="ha_hide_if_unavailable">Ausblenden, wenn nicht verfügbar</string>
+    <string name="ha_save_button">Speichern</string>
+    <string name="entity_picker_title">Entität auswählen</string>
+    <string name="entity_picker_search_hint">Suchen...</string>
+    <string name="display_mode_normal">Normal</string>
+    <string name="display_mode_countdown">Restlaufzeit (mm:ss)</string>
+    <string name="ha_status_disconnected">Getrennt</string>
+    <string name="ha_status_connecting">Verbinde...</string>
+    <string name="ha_status_connected">Verbunden</string>
+    <string name="ha_status_error">Fehler</string>
+    <string name="ha_invalid_url">Ungültige URL</string>
+    <string name="ha_auth_failed">Authentifizierung fehlgeschlagen</string>
+    <string name="ha_unavailable">n.v.</string>
+    <string name="ha_fetch_entities_error">Fehler beim Abrufen der Entitäten.</string>
 </resources>
