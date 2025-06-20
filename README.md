@@ -4,6 +4,9 @@
 
 Cornerlays is a simple yet powerful app designed for Android TV and other Android devices that allows you to display persistent, glanceable information right where you need it.
 
+
+![main](https://github.com/user-attachments/assets/cae434a1-df6d-4188-aa95-bf5780f74cc3)
+
 ## 
 
 ## ✨ Features
