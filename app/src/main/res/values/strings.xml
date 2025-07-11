@@ -55,8 +55,12 @@
     <string name="ha_save_button">Speichern</string>
     <string name="entity_picker_title">Entität auswählen</string>
     <string name="entity_picker_search_hint">Suchen...</string>
-    <string name="display_mode_normal">Normal</string>
+    <string name="display_mode_normal">Normal (unformatiert)</string>
     <string name="display_mode_countdown">Restlaufzeit (mm:ss)</string>
+    <string name="display_mode_time_only">Nur Uhrzeit (HH:mm)</string>
+    <string name="display_mode_datetime">Datum &amp; Uhrzeit (dd.MM. HH:mm)</string>
+    <string name="display_mode_weekday_time">Wochentag &amp; Uhrzeit (Mo, HH:mm)</string>
+    <string name="display_mode_countdown_hms">Restlaufzeit (hh:mm:ss)</string>
     <string name="ha_status_disconnected">Getrennt</string>
     <string name="ha_status_connecting">Verbinde...</string>
     <string name="ha_status_connected">Verbunden</string>

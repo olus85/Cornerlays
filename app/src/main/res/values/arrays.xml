@@ -27,11 +27,19 @@
 
     <string-array name="ha_display_mode_keys" translatable="false">
         <item>Normal</item>
+        <item>TimeOnly</item>
+        <item>DateTime</item>
+        <item>WeekdayTime</item>
         <item>Countdown</item>
+        <item>CountdownHms</item>
     </string-array>
     <string-array name="ha_display_mode_values">
         <item>@string/display_mode_normal</item>
+        <item>@string/display_mode_time_only</item>
+        <item>@string/display_mode_datetime</item>
+        <item>@string/display_mode_weekday_time</item>
         <item>@string/display_mode_countdown</item>
+        <item>@string/display_mode_countdown_hms</item>
     </string-array>
 
     <integer-array name="color_palette">
