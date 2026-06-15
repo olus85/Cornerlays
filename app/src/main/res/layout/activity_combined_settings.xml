@@ -14,25 +14,19 @@
         android:padding="8dp">
 
         <RadioButton
-            android:id="@+id/tab_clock"
+            android:id="@+id/tab_clock_date"
             style="@style/SettingsItem.Tab"
             android:checked="true"
-            android:nextFocusRight="@id/tab_date"
-            android:nextFocusDown="@id/switch_clock_enabled"
-            android:text="@string/tab_clock" />
-
-        <RadioButton
-            android:id="@+id/tab_date"
-            style="@style/SettingsItem.Tab"
-            android:nextFocusLeft="@id/tab_clock"
             android:nextFocusRight="@id/tab_weather"
-            android:nextFocusDown="@id/switch_date_enabled"
-            android:text="@string/tab_date" />
+            android:nextFocusDown="@id/switch_clock_enabled"
+            android:text="Uhr/Datum" />
+
+
 
         <RadioButton
             android:id="@+id/tab_weather"
             style="@style/SettingsItem.Tab"
-            android:nextFocusLeft="@id/tab_date"
+            android:nextFocusLeft="@id/tab_clock_date"
             android:nextFocusRight="@id/tab_ha"
             android:nextFocusDown="@id/switch_weather_enabled"
             android:text="@string/tab_weather" />
@@ -41,8 +35,16 @@
             android:id="@+id/tab_ha"
             style="@style/SettingsItem.Tab"
             android:nextFocusLeft="@id/tab_weather"
+            android:nextFocusRight="@id/tab_settings"
             android:nextFocusDown="@id/btn_ha_overlay_1"
             android:text="@string/tab_ha" />
+
+        <RadioButton
+            android:id="@+id/tab_settings"
+            style="@style/SettingsItem.Tab"
+            android:nextFocusLeft="@id/tab_ha"
+            android:nextFocusDown="@id/btn_test_connections"
+            android:text="Einstellungen" />
     </RadioGroup>
 
     <androidx.viewpager2.widget.ViewPager2

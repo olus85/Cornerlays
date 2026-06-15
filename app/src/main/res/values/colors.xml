@@ -27,4 +27,5 @@
     <color name="html_blue">#0000FF</color>
     <color name="html_teal">#008080</color>
     <color name="html_aqua">#00FFFF</color>
+    <color name="gray">#808080</color>
 </resources>

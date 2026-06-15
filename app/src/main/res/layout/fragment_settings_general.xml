@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Tools / Test (Swapped to Top) -->
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:layout_marginTop="0dp"
+            android:text="Tools &amp; Diagnose" />
+
+        <View style="@style/SettingsDivider" />
+
+        <!-- Connection Test Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btn_test_connections"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verbindung testen"
+                android:nextFocusDown="@+id/btn_export_settings"
+                android:nextFocusLeft="@+id/btn_test_connections"
+                android:nextFocusRight="@+id/btn_test_connections"
+                android:textColor="@color/tv_button_text"
+                android:background="@drawable/tv_button_bg"
+                android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/text_test_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Verbindungen nicht getestet"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?attr/colorOnSurface" />
+        </LinearLayout>
+
+        <!-- Backup Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btn_export_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Backup exportieren"
+                android:nextFocusUp="@+id/btn_test_connections"
+                android:nextFocusDown="@+id/container_ha_url"
+                android:nextFocusLeft="@+id/btn_export_settings"
+                android:nextFocusRight="@+id/btn_import_settings"
+                android:textColor="@color/tv_button_text"
+                android:background="@drawable/tv_button_bg"
+                android:focusable="true"/>
+
+            <Button
+                android:id="@+id/btn_import_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Backup importieren"
+                android:nextFocusUp="@+id/btn_test_connections"
+                android:nextFocusDown="@+id/container_ha_url"
+                android:nextFocusLeft="@+id/btn_export_settings"
+                android:nextFocusRight="@+id/btn_import_settings"
+                android:textColor="@color/tv_button_text"
+                android:background="@drawable/tv_button_bg"
+                android:focusable="true"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_backup_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:text="Backup-Status: Bereit"
+            android:textColor="?attr/colorOnSurface" />
+
+        <!-- System & Verbindung (Swapped to Bottom) -->
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:layout_marginTop="16dp"
+            android:text="System &amp; Verbindung" />
+
+        <View style="@style/SettingsDivider" />
+
+        <!-- HA URL & Token -->
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="Home Assistant Verbindung" />
+
+        <LinearLayout
+            style="@style/SettingsItem.Container"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ha_connection_status"
+                android:textAppearance="?attr/textAppearanceBody1" />
+            <ImageView
+                android:id="@+id/icon_ha_connection_status"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp" />
+            <TextView
+                android:id="@+id/text_ha_connection_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody2" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container_ha_url"
+            style="@style/SettingsItem.TextInput"
+            android:nextFocusUp="@+id/btn_export_settings"
+            android:nextFocusDown="@+id/container_ha_token">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_ha_url"
+                style="@style/SettingsItem.TextInput.EditText"
+                android:hint="@string/ha_url_hint"
+                android:inputType="textUri" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container_ha_token"
+            style="@style/SettingsItem.TextInput"
+            android:nextFocusUp="@+id/container_ha_url"
+            android:nextFocusDown="@+id/container_mqtt_ip"
+            app:passwordToggleEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_ha_token"
+                style="@style/SettingsItem.TextInput.EditText"
+                android:hint="@string/ha_token_hint"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- MQTT -->
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:text="MQTT Server (Statusübertragung)" />
+
+        <LinearLayout
+            style="@style/SettingsItem.Container"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mqtt_connection_status"
+                android:textAppearance="?attr/textAppearanceBody1" />
+            <ImageView
+                android:id="@+id/icon_mqtt_connection_status"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp" />
+            <TextView
+                android:id="@+id/text_mqtt_connection_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody2" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container_mqtt_ip"
+            style="@style/SettingsItem.TextInput"
+            android:nextFocusUp="@+id/container_ha_token"
+            android:nextFocusDown="@+id/container_mqtt_port">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_mqtt_ip"
+                style="@style/SettingsItem.TextInput.EditText"
+                android:hint="@string/mqtt_ip_hint"
+                android:inputType="textUri" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container_mqtt_port"
+            style="@style/SettingsItem.TextInput"
+            android:nextFocusUp="@+id/container_mqtt_ip"
+            android:nextFocusDown="@+id/container_mqtt_user">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_mqtt_port"
+                style="@style/SettingsItem.TextInput.EditText"
+                android:hint="@string/mqtt_port_hint"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container_mqtt_user"
+            style="@style/SettingsItem.TextInput"
+            android:nextFocusUp="@+id/container_mqtt_port"
+            android:nextFocusDown="@+id/container_mqtt_pass">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_mqtt_user"
+                style="@style/SettingsItem.TextInput.EditText"
+                android:hint="@string/mqtt_user_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container_mqtt_pass"
+            style="@style/SettingsItem.TextInput"
+            android:nextFocusUp="@+id/container_mqtt_user"
+            app:passwordToggleEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_mqtt_pass"
+                style="@style/SettingsItem.TextInput.EditText"
+                android:hint="@string/mqtt_pass_hint"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+</ScrollView>

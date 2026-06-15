@@ -40,7 +40,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -147,11 +152,13 @@ public class HomeAssistantService extends Service {
         }
         String url = prefs.getString(SettingsManager.KEY_HA_URL, "");
         if (TextUtils.isEmpty(url) || !isAnyOverlayConfigured()) {
+            Log.d(TAG, "connect: Cancelled. URL is empty or no overlays configured.");
             stopSelf();
             return;
         }
 
         String wsUrl = url.replace("http", "ws") + "/api/websocket";
+        Log.d(TAG, "connect: Connecting to " + wsUrl);
         Request request = new Request.Builder().url(wsUrl).build();
 
         broadcastConnectionStatus(getString(R.string.ha_status_connecting));
@@ -207,24 +214,31 @@ public class HomeAssistantService extends Service {
 
     private class HaWebSocketListener extends WebSocketListener {
         @Override
-        public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {}
+        public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
+            Log.d(TAG, "WebSocket onOpen called.");
+        }
 
         @Override
         public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+            Log.d(TAG, "WebSocket onMessage: " + text);
             handler.post(() -> handleWebSocketMessage(text));
         }
 
         @Override
         public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
+            Log.e(TAG, "WebSocket onFailure: ", t);
             broadcastConnectionStatus(getString(R.string.ha_status_error));
             scheduleNextReconnect();
         }
 
         @Override
-        public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {}
+        public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+            Log.d(TAG, "WebSocket onClosing: " + reason);
+        }
 
         @Override
         public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+            Log.d(TAG, "WebSocket onClosed: " + reason);
             broadcastConnectionStatus(getString(R.string.ha_status_disconnected));
             scheduleNextReconnect();
         }
@@ -233,6 +247,9 @@ public class HomeAssistantService extends Service {
     private void handleWebSocketMessage(String text) {
         try {
             JsonObject message = JsonParser.parseString(text).getAsJsonObject();
+            if (message == null || !message.has("type") || message.get("type").isJsonNull()) {
+                return;
+            }
             String type = message.get("type").getAsString();
 
             switch (type) {
@@ -316,21 +333,31 @@ public class HomeAssistantService extends Service {
     private void handleEvent(JsonObject message) {
         try {
             JsonObject eventData = message.getAsJsonObject("event");
+            if (eventData == null) {
+                return;
+            }
             if (eventData.has("c")) {
                 JsonObject changedEntities = eventData.getAsJsonObject("c");
                 for (String entityId : changedEntities.keySet()) {
                     JsonObject change = changedEntities.getAsJsonObject(entityId);
-                    if (change.has("+") && change.getAsJsonObject("+").has("s")) {
-                        entityStates.put(entityId, change.getAsJsonObject("+").get("s").getAsString());
+                    if (change != null && change.has("+") && change.getAsJsonObject("+").has("s")) {
+                        JsonElement sVal = change.getAsJsonObject("+").get("s");
+                        if (sVal != null && !sVal.isJsonNull()) {
+                            entityStates.put(entityId, sVal.getAsString());
+                        }
                     }
                 }
-            } else if ("state_changed".equals(eventData.get("event_type").getAsString())) {
+            } else if (eventData.has("event_type") && !eventData.get("event_type").isJsonNull() && "state_changed".equals(eventData.get("event_type").getAsString())) {
                 JsonObject data = eventData.getAsJsonObject("data");
-                String entityId = data.get("entity_id").getAsString();
-                if (isEntityMonitored(entityId)) {
-                    JsonObject newState = data.getAsJsonObject("new_state");
-                    String state = newState.get("state").isJsonNull() ? "unavailable" : newState.get("state").getAsString();
-                    entityStates.put(entityId, state);
+                if (data != null && data.has("entity_id") && !data.get("entity_id").isJsonNull()) {
+                    String entityId = data.get("entity_id").getAsString();
+                    if (isEntityMonitored(entityId)) {
+                        JsonObject newState = data.getAsJsonObject("new_state");
+                        if (newState != null && newState.has("state")) {
+                            String state = newState.get("state").isJsonNull() ? "unavailable" : newState.get("state").getAsString();
+                            entityStates.put(entityId, state);
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -401,14 +428,14 @@ public class HomeAssistantService extends Service {
 
             boolean isAvailable = state != null && !state.equalsIgnoreCase("unavailable") && !state.equalsIgnoreCase("unknown") && !state.equalsIgnoreCase("off");
 
-            if (!isAvailable && config.isHideWhenUnavailable()) {
+            if (!isAvailable && config.getVisibilityMode() == 1) {
                 view.setVisibility(View.GONE);
                 continue;
             }
             view.setVisibility(View.VISIBLE);
 
-            String displayName = TextUtils.isEmpty(config.getDisplayName()) ? "" : config.getDisplayName() + " ";
-            String unit = TextUtils.isEmpty(config.getUnit()) ? "" : " " + config.getUnit();
+            String displayName = TextUtils.isEmpty(config.getDisplayName()) ? "" : config.getDisplayName();
+            String unit = TextUtils.isEmpty(config.getUnit()) ? "" : config.getUnit();
             String displayMode = config.getDisplayMode();
 
             if (isAvailable) {
@@ -417,7 +444,10 @@ public class HomeAssistantService extends Service {
                         case "TimeOnly":
                         case "DateTime":
                         case "WeekdayTime":
-                            OffsetDateTime odt = OffsetDateTime.parse(state, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                            OffsetDateTime odt = parseDateTime(state);
+                            if (odt == null) {
+                                throw new IllegalArgumentException("Could not parse date/time: " + state);
+                            }
                             String pattern = "HH:mm"; // Default für TimeOnly
                             if ("DateTime".equals(displayMode)) pattern = "dd.MM. HH:mm";
                             if ("WeekdayTime".equals(displayMode)) pattern = "E, HH:mm";
@@ -426,7 +456,11 @@ public class HomeAssistantService extends Service {
 
                         case "Countdown":
                         case "CountdownHms":
-                            long secondsRemaining = ChronoUnit.SECONDS.between(Instant.now(), OffsetDateTime.parse(state).toInstant());
+                            OffsetDateTime countdownOdt = parseDateTime(state);
+                            if (countdownOdt == null) {
+                                throw new IllegalArgumentException("Could not parse countdown: " + state);
+                            }
+                            long secondsRemaining = ChronoUnit.SECONDS.between(Instant.now(), countdownOdt.toInstant());
                             if (secondsRemaining <= 0) {
                                 textToShow = "00:00";
                             } else if ("CountdownHms".equals(displayMode)) {
@@ -443,11 +477,11 @@ public class HomeAssistantService extends Service {
 
                         case "Normal":
                         default:
-                            textToShow = state;
+                            textToShow = formatNumericState(state);
                             break;
                     }
                 } catch (Exception e) {
-                    textToShow = "Normal".equals(displayMode) ? state : "Invalid Date";
+                    textToShow = "Normal".equals(displayMode) ? formatNumericState(state) : "Invalid Date";
                 }
             } else {
                 textToShow = getString(R.string.ha_unavailable);
@@ -455,6 +489,29 @@ public class HomeAssistantService extends Service {
 
             tv.setText((displayName + textToShow + unit).trim());
         }
+    }
+
+    private OffsetDateTime parseDateTime(String state) {
+        if (state == null) return null;
+        try {
+            return OffsetDateTime.parse(state, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        } catch (Exception ignored) {}
+        try {
+            LocalDateTime ldt = LocalDateTime.parse(state, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            return ldt.atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        } catch (Exception ignored) {}
+        try {
+            ZonedDateTime zdt = ZonedDateTime.parse(state);
+            return zdt.toOffsetDateTime();
+        } catch (Exception ignored) {}
+        try {
+            return Instant.parse(state).atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        } catch (Exception ignored) {}
+        try {
+            LocalTime lt = LocalTime.parse(state);
+            return lt.atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toOffsetDateTime();
+        } catch (Exception ignored) {}
+        return null;
     }
 
     private void applySettingsToView(View view, HAOverlay config) {
@@ -567,5 +624,18 @@ public class HomeAssistantService extends Service {
             if (config.isEnabled() && !TextUtils.isEmpty(config.getEntityId())) return true;
         }
         return false;
+    }
+
+    private String formatNumericState(String state) {
+        if (state == null) return "";
+        try {
+            Double.parseDouble(state);
+            java.text.DecimalFormatSymbols symbols = new java.text.DecimalFormatSymbols(Locale.getDefault());
+            char localSeparator = symbols.getDecimalSeparator();
+            if (localSeparator != '.') {
+                return state.replace('.', localSeparator);
+            }
+        } catch (NumberFormatException ignored) {}
+        return state;
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:id="@+id/onboarding_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Willkommen bei Cornerlays"/>
+    <TextView
+        android:textSize="16sp"
+        android:gravity="center"
+        android:id="@+id/onboarding_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Cornerlays benötigt einige Berechtigungen, um Overlays auf dem TV anzuzeigen. Bitte erteile die &apos;Über anderen Apps einblenden&apos;-Berechtigung."/>
+    <Button
+        android:textColor="@color/tv_button_text"
+        android:id="@+id/btn_grant_overlay"
+        android:background="@drawable/tv_button_bg"
+        android:padding="16dp"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Overlay Berechtigung erteilen"/>
+    <Button
+        android:textColor="@color/tv_button_text"
+        android:id="@+id/btn_grant_accessibility"
+        android:background="@drawable/tv_button_bg"
+        android:padding="16dp"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Barrierefreiheit (für Dimmer) öffnen"/>
+    <Button
+        android:enabled="false"
+        android:textColor="@color/tv_button_text"
+        android:id="@+id/btn_finish_onboarding"
+        android:background="@drawable/tv_button_bg"
+        android:padding="16dp"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Weiter zur App"/>
+</LinearLayout>

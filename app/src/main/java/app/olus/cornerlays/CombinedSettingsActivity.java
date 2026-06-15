@@ -57,13 +57,13 @@ public class CombinedSettingsActivity extends AppCompatActivity {
         }
 
         tabGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == R.id.tab_clock) {
+            if (checkedId == R.id.tab_clock_date) {
                 viewPager.setCurrentItem(0, false);
-            } else if (checkedId == R.id.tab_date) {
-                viewPager.setCurrentItem(1, false);
             } else if (checkedId == R.id.tab_weather) {
-                viewPager.setCurrentItem(2, false);
+                viewPager.setCurrentItem(1, false);
             } else if (checkedId == R.id.tab_ha) {
+                viewPager.setCurrentItem(2, false);
+            } else if (checkedId == R.id.tab_settings) {
                 viewPager.setCurrentItem(3, false);
             }
         });
@@ -73,7 +73,7 @@ public class CombinedSettingsActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 RadioButton buttonToCheck = (RadioButton) tabGroup.getChildAt(position);
-                if (!buttonToCheck.isChecked()) {
+                if (buttonToCheck != null && !buttonToCheck.isChecked()) {
                     buttonToCheck.setChecked(true);
                 }
             }

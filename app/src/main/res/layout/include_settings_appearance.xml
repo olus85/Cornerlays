@@ -1,64 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
     <RelativeLayout
-        style="@style/SettingsItem.Container"
-        android:focusable="false">
+        android:focusable="false"
+        style="@style/SettingsItem.Container">
         <TextView
+            android:id="@+id/label_setting_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/setting_size" />
+            android:text="@string/setting_size"
+            android:layout_centerVertical="true"/>
         <TextView
+            android:textStyle="bold"
             android:id="@+id/textview_size_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textStyle="bold" />
+            android:layout_alignParentEnd="true"/>
         <SeekBar
             android:id="@+id/seekbar_size"
+            android:focusable="true"
+            android:nextFocusLeft="@+id/seekbar_size"
+            android:nextFocusRight="@+id/seekbar_size"
+            android:nextFocusDown="@+id/seekbar_alpha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textview_size_value"
             android:layout_marginTop="16dp"
-            android:focusable="true"
             android:max="34"
-            android:nextFocusDown="@id/container_color"
-            android:nextFocusLeft="@id/seekbar_size"
-            android:nextFocusRight="@id/seekbar_size"/>
+            android:layout_below="@+id/textview_size_value"/>
     </RelativeLayout>
-
+    <RelativeLayout
+        android:id="@+id/container_ha_alpha"
+        android:focusable="false"
+        style="@style/SettingsItem.Container">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transparenz"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/textview_alpha_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+        <SeekBar
+            android:id="@+id/seekbar_alpha"
+            android:focusable="true"
+            android:nextFocusLeft="@+id/seekbar_alpha"
+            android:nextFocusRight="@+id/seekbar_alpha"
+            android:nextFocusUp="@+id/seekbar_size"
+            android:nextFocusDown="@+id/container_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:max="100"
+            android:layout_below="@+id/textview_alpha_value"/>
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/container_color"
-        style="@style/SettingsItem.Container.Clickable"
-        android:nextFocusUp="@id/seekbar_size"
-        android:nextFocusDown="@id/container_shadow_color"
-        android:nextFocusLeft="@id/container_color"
-        android:nextFocusRight="@id/container_color">
-        <TextView style="@style/SettingsItem.Label" android:text="@string/setting_color"/>
+        android:nextFocusLeft="@+id/container_color"
+        android:nextFocusRight="@+id/container_color"
+        android:nextFocusUp="@+id/seekbar_size"
+        android:nextFocusDown="@+id/container_shadow_color"
+        style="@style/SettingsItem.Container.Clickable">
+        <TextView
+            android:text="@string/setting_color"
+            style="@style/SettingsItem.Label"/>
         <View
             android:id="@+id/color_preview"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
-
     <RelativeLayout
         android:id="@+id/container_shadow_color"
-        style="@style/SettingsItem.Container.Clickable"
-        android:nextFocusUp="@id/container_color"
-        android:nextFocusDown="@id/container_shadow_color"
-        android:nextFocusLeft="@id/container_shadow_color"
-        android:nextFocusRight="@id/container_shadow_color">
-        <TextView style="@style/SettingsItem.Label" android:text="@string/setting_shadow_color"/>
+        android:nextFocusLeft="@+id/container_shadow_color"
+        android:nextFocusRight="@+id/container_shadow_color"
+        android:nextFocusUp="@+id/container_color"
+        android:nextFocusDown="@+id/container_shadow_color"
+        style="@style/SettingsItem.Container.Clickable">
+        <TextView
+            android:text="@string/setting_shadow_color"
+            style="@style/SettingsItem.Label"/>
         <View
             android:id="@+id/shadow_color_preview"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
-
 </merge>

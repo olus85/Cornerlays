@@ -1,48 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="position_options_array">
-        <item>@string/position_top_right</item>
-        <item>@string/position_top_left</item>
-        <item>@string/position_bottom_right</item>
-        <item>@string/position_bottom_left</item>
-    </string-array>
-
-    <string-array name="date_format_options_array_keys" translatable="false">
-        <item>dd.MM.yy</item>
-        <item>dd.MM.yyyy</item>
-        <item>E, dd.MM.</item>
-        <item>EEEE, d.MMMM</item>
-        <item>MM/dd/yy</item>
-        <item>yyyy-MM-dd</item>
-    </string-array>
-
-    <string-array name="date_format_options_array_values">
-        <item>31.12.25</item>
-        <item>31.12.2025</item>
-        <item>Sa, 31.12.</item>
-        <item>Samstag, 31.Dezember</item>
-        <item>12/31/25</item>
-        <item>2025-12-31</item>
-    </string-array>
-
-    <string-array name="ha_display_mode_keys" translatable="false">
-        <item>Normal</item>
-        <item>TimeOnly</item>
-        <item>DateTime</item>
-        <item>WeekdayTime</item>
-        <item>Countdown</item>
-        <item>CountdownHms</item>
-    </string-array>
-    <string-array name="ha_display_mode_values">
-        <item>@string/display_mode_normal</item>
-        <item>@string/display_mode_time_only</item>
-        <item>@string/display_mode_datetime</item>
-        <item>@string/display_mode_weekday_time</item>
-        <item>@string/display_mode_countdown</item>
-        <item>@string/display_mode_countdown_hms</item>
-    </string-array>
-
-    <integer-array name="color_palette">
+    <array name="color_palette">
         <item>@color/html_white</item>
         <item>@color/html_black</item>
         <item>@color/html_silver</item>
@@ -59,6 +17,54 @@
         <item>@color/html_blue</item>
         <item>@color/html_teal</item>
         <item>@color/html_aqua</item>
-    </integer-array>
-
+    </array>
+    <array name="date_format_options_array_keys">
+        <item>dd.MM.yy</item>
+        <item>dd.MM.yyyy</item>
+        <item>E, dd.MM.</item>
+        <item>EEEE, d.MMMM</item>
+        <item>MM/dd/yy</item>
+        <item>yyyy-MM-dd</item>
+    </array>
+    <array name="date_format_options_array_values">
+        <item>31.12.25</item>
+        <item>31.12.2025</item>
+        <item>Sa, 31.12.</item>
+        <item>Samstag, 31.Dezember</item>
+        <item>12/31/25</item>
+        <item>2025-12-31</item>
+    </array>
+    <array name="ha_camera_stream_options">
+        <item>Live-Stream (Proxy)</item>
+        <item>Snapshot (Bild-Attribut)</item>
+        <item>Echtzeit-Stream (MJPEG)</item>
+    </array>
+    <array name="ha_display_mode_keys">
+        <item>Normal</item>
+        <item>TimeOnly</item>
+        <item>DateTime</item>
+        <item>WeekdayTime</item>
+        <item>Countdown</item>
+        <item>CountdownHms</item>
+    </array>
+    <array name="ha_display_mode_values">
+        <item>@string/display_mode_normal</item>
+        <item>@string/display_mode_time_only</item>
+        <item>@string/display_mode_datetime</item>
+        <item>@string/display_mode_weekday_time</item>
+        <item>@string/display_mode_countdown</item>
+        <item>@string/display_mode_countdown_hms</item>
+    </array>
+    <array name="ha_visibility_mode_options">
+        <item>Immer anzeigen</item>
+        <item>Bei Fehler ausblenden (unavailable, unknown)</item>
+        <item>Wenn eigene Entität bestimmten Zustand hat</item>
+        <item>Wenn andere Entität bestimmten Zustand hat</item>
+    </array>
+    <array name="position_options_array">
+        <item>@string/position_top_right</item>
+        <item>@string/position_top_left</item>
+        <item>@string/position_bottom_right</item>
+        <item>@string/position_bottom_left</item>
+    </array>
 </resources>
