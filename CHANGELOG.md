@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4] - 2026-06-16
+
+### Fixed
+- **Home Assistant Overlay Visibility:** Fixed visibility checks for showing/hiding overlays based on own or other entities' states.
+- **Attribute Display:** Added parsing and display for selected entity attributes (Anzeige-Inhalten) on overlays.
+- **State Rules (Zustands-Regeln):** Implemented dynamic color and text overrides when a configured condition is met.
+- **Opacity/Alpha:** Implemented transparency configuration for overlays.
+- **Weather Service:** Added request cancellation on service destruction to prevent memory leaks or crashes.
+
 ## [1.3] - 2026-06-15
 
 ### Added

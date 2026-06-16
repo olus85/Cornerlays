@@ -63,6 +63,7 @@ import java.util.stream.Collectors;
 import app.olus.cornerlays.R;
 import app.olus.cornerlays.SettingsManager;
 import app.olus.cornerlays.ha.model.HAOverlay;
+import app.olus.cornerlays.ha.model.HARule;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -90,6 +91,7 @@ public class HomeAssistantService extends Service {
     private List<HAOverlay> overlayConfigs;
     private final List<View> overlayViews = new ArrayList<>();
     private final Map<String, String> entityStates = new ConcurrentHashMap<>();
+    private final Map<String, JsonObject> entityAttributes = new ConcurrentHashMap<>();
 
     private boolean isPositioningMode = false;
     private int positioningSlotIndex = -1;
@@ -276,6 +278,9 @@ public class HomeAssistantService extends Service {
                             String entityId = stateObj.get("entity_id").getAsString();
                             String state = stateObj.get("state").getAsString();
                             entityStates.put(entityId, state);
+                            if (stateObj.has("attributes") && !stateObj.get("attributes").isJsonNull()) {
+                                entityAttributes.put(entityId, stateObj.getAsJsonObject("attributes"));
+                            }
                         }
                     }
                     break;
@@ -307,11 +312,18 @@ public class HomeAssistantService extends Service {
         }
     }
     private void subscribeToStates() {
-        List<String> monitoredEntities = overlayConfigs.stream()
-                .filter(c -> c.isEnabled() && !TextUtils.isEmpty(c.getEntityId()))
-                .map(HAOverlay::getEntityId)
-                .distinct()
-                .collect(Collectors.toList());
+        List<String> monitoredEntities = new ArrayList<>();
+        for (HAOverlay c : overlayConfigs) {
+            if (c.isEnabled()) {
+                if (!TextUtils.isEmpty(c.getEntityId())) {
+                    monitoredEntities.add(c.getEntityId());
+                }
+                if (c.getVisibilityMode() == 3 && !TextUtils.isEmpty(c.getTriggerEntityId())) {
+                    monitoredEntities.add(c.getTriggerEntityId());
+                }
+            }
+        }
+        monitoredEntities = monitoredEntities.stream().distinct().collect(Collectors.toList());
 
         if (monitoredEntities.isEmpty()) return;
 
@@ -336,14 +348,61 @@ public class HomeAssistantService extends Service {
             if (eventData == null) {
                 return;
             }
+            if (eventData.has("a")) {
+                JsonObject addedEntities = eventData.getAsJsonObject("a");
+                for (String entityId : addedEntities.keySet()) {
+                    JsonObject added = addedEntities.getAsJsonObject(entityId);
+                    if (added != null) {
+                        if (added.has("s")) {
+                            JsonElement sVal = added.get("s");
+                            if (sVal != null && !sVal.isJsonNull()) {
+                                entityStates.put(entityId, sVal.getAsString());
+                            }
+                        }
+                        if (added.has("a")) {
+                            JsonObject aVal = added.getAsJsonObject("a");
+                            if (aVal != null) {
+                                entityAttributes.put(entityId, aVal);
+                            }
+                        }
+                    }
+                }
+            }
             if (eventData.has("c")) {
                 JsonObject changedEntities = eventData.getAsJsonObject("c");
                 for (String entityId : changedEntities.keySet()) {
                     JsonObject change = changedEntities.getAsJsonObject(entityId);
-                    if (change != null && change.has("+") && change.getAsJsonObject("+").has("s")) {
-                        JsonElement sVal = change.getAsJsonObject("+").get("s");
-                        if (sVal != null && !sVal.isJsonNull()) {
-                            entityStates.put(entityId, sVal.getAsString());
+                    if (change != null) {
+                        if (change.has("+")) {
+                            JsonObject plus = change.getAsJsonObject("+");
+                            if (plus.has("s")) {
+                                JsonElement sVal = plus.get("s");
+                                if (sVal != null && !sVal.isJsonNull()) {
+                                    entityStates.put(entityId, sVal.getAsString());
+                                }
+                            }
+                            if (plus.has("a")) {
+                                JsonObject aVal = plus.getAsJsonObject("a");
+                                if (aVal != null) {
+                                    mergeAttributes(entityId, aVal);
+                                }
+                            }
+                        }
+                        if (change.has("-")) {
+                            JsonObject minus = change.getAsJsonObject("-");
+                            if (minus.has("a")) {
+                                JsonArray removedAttrs = minus.getAsJsonArray("a");
+                                if (removedAttrs != null) {
+                                    JsonObject current = entityAttributes.get(entityId);
+                                    if (current != null) {
+                                        for (JsonElement el : removedAttrs) {
+                                            if (el.isJsonPrimitive()) {
+                                                current.remove(el.getAsString());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -353,9 +412,17 @@ public class HomeAssistantService extends Service {
                     String entityId = data.get("entity_id").getAsString();
                     if (isEntityMonitored(entityId)) {
                         JsonObject newState = data.getAsJsonObject("new_state");
-                        if (newState != null && newState.has("state")) {
-                            String state = newState.get("state").isJsonNull() ? "unavailable" : newState.get("state").getAsString();
-                            entityStates.put(entityId, state);
+                        if (newState != null) {
+                            if (newState.has("state")) {
+                                String state = newState.get("state").isJsonNull() ? "unavailable" : newState.get("state").getAsString();
+                                entityStates.put(entityId, state);
+                            }
+                            if (newState.has("attributes")) {
+                                JsonObject attrs = newState.getAsJsonObject("attributes");
+                                if (attrs != null) {
+                                    entityAttributes.put(entityId, attrs);
+                                }
+                            }
                         }
                     }
                 }
@@ -365,11 +432,25 @@ public class HomeAssistantService extends Service {
         }
     }
 
+    private void mergeAttributes(String entityId, JsonObject newAttrs) {
+        JsonObject current = entityAttributes.get(entityId);
+        if (current == null) {
+            current = new JsonObject();
+            entityAttributes.put(entityId, current);
+        }
+        for (String key : newAttrs.keySet()) {
+            current.add(key, newAttrs.get(key));
+        }
+    }
+
 
     private boolean isEntityMonitored(String entityId) {
         if(overlayConfigs == null) return false;
         for (HAOverlay config : overlayConfigs) {
-            if (config.isEnabled() && entityId.equals(config.getEntityId())) return true;
+            if (config.isEnabled()) {
+                if (entityId.equals(config.getEntityId())) return true;
+                if (config.getVisibilityMode() == 3 && entityId.equals(config.getTriggerEntityId())) return true;
+            }
         }
         return false;
     }
@@ -423,12 +504,57 @@ public class HomeAssistantService extends Service {
 
             TextView tv = view.findViewById(R.id.overlay_text_view);
             String entityId = config.getEntityId();
-            String state = entityStates.getOrDefault(entityId, getString(R.string.ha_unavailable));
+
+            // Resolve either main state or configured attribute
+            String state;
+            String attrName = config.getAttributeName();
+            if (!TextUtils.isEmpty(attrName)) {
+                JsonObject attrs = entityAttributes.get(entityId);
+                JsonElement attrVal = (attrs != null) ? attrs.get(attrName) : null;
+                if (attrVal != null && !attrVal.isJsonNull()) {
+                    if (attrVal.isJsonPrimitive()) {
+                        state = attrVal.getAsString();
+                    } else {
+                        state = attrVal.toString();
+                    }
+                } else {
+                    state = getString(R.string.ha_unavailable);
+                }
+            } else {
+                state = entityStates.getOrDefault(entityId, getString(R.string.ha_unavailable));
+            }
+
             String textToShow = "";
 
             boolean isAvailable = state != null && !state.equalsIgnoreCase("unavailable") && !state.equalsIgnoreCase("unknown") && !state.equalsIgnoreCase("off");
 
-            if (!isAvailable && config.getVisibilityMode() == 1) {
+            // Evaluate visibility rules
+            boolean isVisible = true;
+            int visibilityMode = config.getVisibilityMode();
+            if (visibilityMode == 1) {
+                if (!isAvailable) {
+                    isVisible = false;
+                }
+            } else if (visibilityMode == 2) {
+                String triggerState = config.getTriggerState();
+                if (triggerState != null) {
+                    String currentState = entityStates.getOrDefault(entityId, "");
+                    if (!currentState.equalsIgnoreCase(triggerState.trim())) {
+                        isVisible = false;
+                    }
+                }
+            } else if (visibilityMode == 3) {
+                String triggerEntity = config.getTriggerEntityId();
+                String triggerState = config.getTriggerState();
+                if (!TextUtils.isEmpty(triggerEntity) && triggerState != null) {
+                    String currentState = entityStates.getOrDefault(triggerEntity, "");
+                    if (!currentState.equalsIgnoreCase(triggerState.trim())) {
+                        isVisible = false;
+                    }
+                }
+            }
+
+            if (!isVisible) {
                 view.setVisibility(View.GONE);
                 continue;
             }
@@ -487,6 +613,23 @@ public class HomeAssistantService extends Service {
                 textToShow = getString(R.string.ha_unavailable);
             }
 
+            // Evaluate state rules (styling and alternative text)
+            int finalColor = config.getColor();
+            if (config.getRules() != null) {
+                for (HARule rule : config.getRules()) {
+                    if (rule.getCondition() != null && state.equalsIgnoreCase(rule.getCondition().trim())) {
+                        if (!TextUtils.isEmpty(rule.getDisplayText())) {
+                            textToShow = rule.getDisplayText();
+                        }
+                        if (rule.getColor() != null) {
+                            finalColor = rule.getColor();
+                        }
+                        break;
+                    }
+                }
+            }
+
+            tv.setTextColor(finalColor);
             tv.setText((displayName + textToShow + unit).trim());
         }
     }
@@ -520,6 +663,7 @@ public class HomeAssistantService extends Service {
         textView.setTextColor(config.getColor());
         textView.setShadowLayer(5.0f, 0, 0, config.getShadowColor());
         textView.setTypeface(Typeface.DEFAULT_BOLD);
+        view.setAlpha(config.getAlpha());
     }
     private WindowManager.LayoutParams getLayoutParams(HAOverlay config) {
         int layoutFlag = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY : WindowManager.LayoutParams.TYPE_PHONE;

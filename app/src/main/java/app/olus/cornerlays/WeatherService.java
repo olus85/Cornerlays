@@ -144,6 +144,15 @@ public class WeatherService extends BaseOverlayService {
 
 
     @Override
+    public void onDestroy() {
+        if (requestQueue != null) {
+            requestQueue.cancelAll(request -> true);
+        }
+        super.onDestroy();
+    }
+
+
+    @Override
     protected long getUpdateDelay() {
         return 1800000; // 30 Minuten
     }
